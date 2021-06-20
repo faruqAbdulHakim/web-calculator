@@ -1,0 +1,48 @@
+body {
+    font-family: monospace;
+    font-size: 1.4em;
+}
+.flex-row-container {
+    display: flex;
+    flex-direction: row;
+}
+.flex-column-container {
+    display: flex;
+    flex-direction: column; 
+}
+h1{
+    padding: 20px 10px;
+    margin: 0;
+    text-align: right;
+    background-color: black;
+    color: white;
+}
+main {
+    width: 80%;
+    max-width: 600px;
+    margin: auto;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+.btn,
+.operators {
+    flex-basis: 25%;
+    text-align: center;
+    padding: 30px 0;
+    background-color: #f5f5f5;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+}
+.operators {
+    background-color: orange;
+}
+.btn:hover {
+    background-color: #ddd;
+}
+.operators:hover {
+    background-color: rgb(214, 139, 0);
+}
+.double {
+    flex-basis: 50%;
+}
