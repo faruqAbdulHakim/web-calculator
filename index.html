@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" draggable="true">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,39 +7,43 @@
     <title>Calculator App</title>
     <link rel="stylesheet" href="./style.css">
 </head>
-<body class="flex-column-container">
-    <main class="flex-column-container">
-        <h1 id="display-number">0</h1>
-        <div class="flex-row-container">
-            <div class="btn">7</div>
-            <div class="btn">8</div>
-            <div class="btn">9</div>
-            <div class="operators">+</div>
-        </div>
-        <div class="flex-row-container">
-            <div class="btn">4</div>
-            <div class="btn">5</div>
-            <div class="btn">6</div>
-            <div class="operators">-</div>
-        </div>
-        <div class="flex-row-container">
-            <div class="btn">1</div>
-            <div class="btn">2</div>
-            <div class="btn">3</div>
-            <div class="operators">/</div>
-        </div>
-        <div class="flex-row-container">
-            <div class="btn">0</div>
-            <div class="btn">.</div>
-            <div class="operators">+/-</div>
-            <div class="operators">X</div>
-        </div>
-        <div class="flex-row-container">
-            <div class="operators">Del</div>
-            <div class="operators">C</div>
-            <div class="operators double">=</div>
-        </div>
-    </main>
+<body>
+    <div id="calculator-container">
+        <main>
+            <h2 id="calculate">0</h2>
+            <h1 id="entry-num">0</h1>
+            <div class="row">
+                <div class="btn clear">C</div>
+                <div class="btn clear-entry">CE</div>
+                <div class="btn del">&#8656</div>
+                <div class="btn operators">+</div>
+            </div>
+            <div class="row">
+                <div class="btn nums">7</div>
+                <div class="btn nums">8</div>
+                <div class="btn nums">9</div>
+                <div class="btn operators">-</div>
+            </div>
+            <div class="row">
+                <div class="btn nums">4</div>
+                <div class="btn nums">5</div>
+                <div class="btn nums">6</div>
+                <div class="btn operators">X</div>
+            </div>
+            <div class="row">
+                <div class="btn nums">1</div>
+                <div class="btn nums">2</div>
+                <div class="btn nums">3</div>
+                <div class="btn operators">/</div>
+            </div>
+            <div class="row">
+                <div class="btn nums">0</div>
+                <div class="btn float">.</div>
+                <div class="btn negative">+/-</div>
+                <div class="btn equal">=</div>
+            </div>
+        </main>
+    </div>
     <script src="./calculator.js"></script>
 </body>
 </html>
