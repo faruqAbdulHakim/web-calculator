@@ -1,109 +1,102 @@
-const displayNumber = document.getElementById('display-number');
-let calculate = ["0"];
+const calculate = [];
 
-function updateDisplayNumber() {
-    displayNumber.innerText = '';
-    for (item of calculate) {
-        displayNumber.innerText += ' '+item;
-    }
-}
-
-function updateCurrentNumber(N) {
-    let number = calculate[calculate.length-1];
-    if (number === '0') {
-        number = N;
+function updateCalculate() {
+    if (calculate.length === 0) {
+        document.querySelector('#calculate').innerText = '0';
     } else {
-        number += N;
+        document.querySelector('#calculate').innerText = `${calculate.join(' ')}`
     }
-    calculate[calculate.length-1] = number;
-    updateDisplayNumber();
 }
 
-function numberToFloat() {
-    let number = calculate[calculate.length-1];
-    if (!number.includes('.')){
-        number += '.';
-    }
-    console.log(!number.includes('.'))
-    calculate[calculate.length-1] = number;
-    updateDisplayNumber();
+function entryNum() {
+    return document.querySelector('#entry-num');
 }
 
-const buttons = document.getElementsByClassName('btn');
-for (button of buttons) {
-    if (button.innerText === '.') {
-        button.addEventListener('click', function() {
-            numberToFloat();
-        })
-        continue;
-    }
-    button.addEventListener('click', function(event) {
-        updateCurrentNumber(event.target.innerText);
+// insert num to entrynumber
+const nums = document.querySelectorAll('.nums');
+for (let num of nums) {
+    num.addEventListener('click', function() {
+        if (entryNum().innerText === '0') {
+            entryNum().innerText = num.innerText;
+        } else if (entryNum().innerText === '-0') {
+            entryNum().innerText = '-'+num.innerText;
+        } else {
+            entryNum().innerText += num.innerText;
+        }
     })
 }
 
-function pushOperator(operator) {
-    const number = calculate[calculate.length-1];
-    if (number === '0' && calculate.length > 1){
-        calculate[calculate.length-2] = operator;
-    } else if (number !== '0') {
-        calculate.push(operator, '0');
-    } 
-    updateDisplayNumber()
-}
-
-function inverseNumber() {
-    const invNumber = `-(${parseFloat(calculate[calculate.length-1])})`
-    calculate[calculate.length-1] = `${eval(invNumber)}`;
-    updateDisplayNumber();
-}
-
-function backspace() {
-    const number = calculate[calculate.length-1];
-    if (number === '0' && calculate.length > 1){
-        calculate.pop();
-        calculate.pop();
-    } else if (number.length === 1 || (number.length === 2 && number[0] === '-')) {
-        calculate[calculate.length-1] = '0';
+// set entrynumber to positive or negative
+document.querySelector('.negative').addEventListener('click', function() {
+    if (entryNum().innerText[0] === '-') {
+        entryNum().innerText = entryNum().innerText.replace('-', '');
     } else {
-        calculate[calculate.length-1] = number.substr(0, number.length-1)
+        entryNum().innerText = '-' + entryNum().innerText;
     }
-    updateDisplayNumber();
-}
+})
 
-function clear() {
-    calculate = ['0'];
-    updateDisplayNumber();
-}
+// make entrynumber to float
+document.querySelector('.float').addEventListener('click', function() {
+    if (!entryNum().innerText.includes('.')) {
+        entryNum().innerText += '.';
+    }
+})
 
-function performCalculation() {
-    let toEval = calculate.join(' ').replace('X', '*');
-    toEval = (eval(toEval)).toFixed(12)
-    calculate = [`${parseFloat(toEval)}`]
-    updateDisplayNumber();
-}
-
-const operators = document.getElementsByClassName('operators');
-for (operator of operators) {
-    if ('+-/X'.includes(operator.innerText)) {
-        operator.addEventListener('click', function(event) {
-            pushOperator(event.target.innerText);
-        })
-    } else if (operator.innerText === '+/-') {
-        operator.addEventListener('click', function() {
-            inverseNumber()
-        });
-    } else if (operator.innerText === 'Del') {
-        operator.addEventListener('click', function() {
-            backspace();
-        })
-    } else if (operator.innerText === 'C') {
-        operator.addEventListener('click', function() {
-            clear();
-        })
+// del last digit entrynumber (or operator if entrynum is 0)
+document.querySelector('.del').addEventListener('click', function() {
+    if (entryNum().innerText.length === 1 || /^-\w$/.test(entryNum().innerText)) {
+        if (calculate.length > 1 && entryNum().innerText === '0') {
+            entryNum().innerText = calculate[calculate.length-2]
+            calculate.splice(calculate.length-2, 2);
+            updateCalculate();
+        } else {
+            entryNum().innerText = '0';
+        }
     } else {
-        operator.addEventListener('click', function() {
-            performCalculation();
-        })
+        entryNum().innerText = entryNum().innerText.slice(0, entryNum().innerText.length-1)
     }
+})
+
+// clear entrynumber
+document.querySelector('.clear-entry').addEventListener('click', function() {
+    entryNum().innerText = '0';
+})
+
+//clear calculator
+document.querySelector('.clear').addEventListener('click', function() {
+    entryNum().innerText = '0';
+    calculate.splice(0, calculate.length)
+    updateCalculate()
+})
+
+// arithmetic operator (set +/- number if entrynum is 0)
+const operators = document.querySelectorAll('.operators');
+for (let operator of operators) {
+    operator.addEventListener('click', function() {
+        if (parseFloat(entryNum().innerText) === 0) {
+            if ('+-/X'.includes(calculate[calculate.length-1])) {
+                calculate[calculate.length-1] = operator.innerText;
+                updateCalculate();
+            }
+        } else {
+            calculate.push(entryNum().innerText, operator.innerText);
+            entryNum().innerText = '0';
+            updateCalculate();
+        }
+    })
 }
+
+// calculate
+document.querySelector('.equal').addEventListener('click', function() {
+    if (parseFloat(entryNum().innerText) === 0) {
+        alert('Please insert number to entrynum :(')
+    } else {
+        calculate.push(entryNum().innerText);
+        const toCalculate = calculate.join(' ').replace('X','*');
+        const answer = eval(toCalculate)
+        calculate.push('=', answer)
+        updateCalculate();
+        entryNum().innerText = `${answer}`;
+        calculate.splice(0, calculate.length);
+    }
+})
