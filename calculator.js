@@ -89,12 +89,12 @@ for (let operator of operators) {
 // calculate
 document.querySelector('.equal').addEventListener('click', function() {
     if (parseFloat(entryNum().innerText) === 0) {
-        alert('Please insert number to entrynum :(')
+        alert('Please insert number to entrynum :(');
     } else {
         calculate.push(entryNum().innerText);
         const toCalculate = calculate.join(' ').replace('X','*');
-        const answer = eval(toCalculate)
-        calculate.push('=', answer)
+        const answer = parseFloat(eval(toCalculate).toFixed(14));
+        calculate.push('=', answer);
         updateCalculate();
         entryNum().innerText = `${answer}`;
         calculate.splice(0, calculate.length);
